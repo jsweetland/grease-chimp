@@ -9,6 +9,10 @@ import (
 
 var port = "10000"
 
+type SimpleMessage struct {
+	Message string `json:"message"`
+}
+
 type About struct {
 	Name string `json:"name"`
 	Version string `json:"version"`
@@ -30,9 +34,10 @@ var Vehicles []Vehicle
 
 func getBaseRoute(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getBaseRoute")
-	json.NewEncoder(w).Encode({
-		message: "no functionality is implemented at this endpoint",
-	})
+	m := SimpleMessage{
+		Message: "no functionality is implemented at this endpoint",
+	}
+	json.NewEncoder(w).Encode(m)
 }
 
 func getAbout(w http.ResponseWriter, r *http.Request){
