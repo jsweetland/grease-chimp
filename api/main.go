@@ -34,19 +34,26 @@ var Vehicles []Vehicle
 
 func getBaseRoute(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getBaseRoute")
+	
 	m := SimpleMessage{
 		Message: "no functionality is implemented at this endpoint",
 	}
+
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(m)
 }
 
 func getAbout(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getAbout")
+	
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(AboutInfo)
 }
 
 func getVehicles(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getVehicles")
+	
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(Vehicles)
 }
 
