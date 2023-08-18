@@ -1,1 +1,1 @@
-# grease-chimp-api
+# Grease Chimp
