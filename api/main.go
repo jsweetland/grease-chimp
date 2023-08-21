@@ -41,6 +41,10 @@ type Vehicle struct {
 
 var Vehicles []Vehicle
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func getBaseRoute(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getBaseRoute")
 	
@@ -48,21 +52,27 @@ func getBaseRoute(w http.ResponseWriter, r *http.Request){
 		Message: "no functionality is implemented at this endpoint",
 	}
 
+	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(m)
 }
 
 func getAbout(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getAbout")
-	
+
+	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
+
 	json.NewEncoder(w).Encode(AboutInfo)
 }
 
 func getVehicles(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getVehicles")
 	
+	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
+	
 	json.NewEncoder(w).Encode(Vehicles)
 }
 
