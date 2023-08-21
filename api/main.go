@@ -23,11 +23,20 @@ var AboutInfo = About{
 	Version: "0.0.0",
 }
 
+type Color struct {
+	Name string `json:"name,omitempty"`
+	Hex string `json:"hex,omitempty"`
+}
+
 type Vehicle struct {
-	Make string `json:"make"`
-	Model string `json:"model"`
-	Year int `json:"year"`
-	Nickname string `json:"nickname"`
+	VIN string `json:"vin,omitempty"`
+	Make string `json:"make,omitempty"`
+	Model string `json:"model,omitempty"`
+	Year int `json:"year,omitempty"`
+	Trim string `json:"trim,omitempty"`
+	Package string `json:"package,omitempty"`
+	Nickname string `json:"nickname,omitempty"`
+	Color Color `json:"color,omitempty"`
 }
 
 var Vehicles []Vehicle
@@ -69,10 +78,24 @@ func handleRequests() {
 func main() {
 	Vehicles = []Vehicle{
 		Vehicle{
+			VIN: "abc",
 			Make: "Jeep",
 			Model: "Wrangler Unlimited",
 			Year: 2020,
+			Trim: "Sport",
+			Package: "Willys",
 			Nickname: "Junebug",
+			Color: Color{
+				Name: "Hellayella",
+				Hex: "fdb93c",
+			},
+		},
+		Vehicle{
+			VIN: "def",
+			Make: "Toyota",
+			Model: "Sienna",
+			Year: 2013,
+			Trim: "Limited",
 		},
 	}
 		
