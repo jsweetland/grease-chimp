@@ -17,5 +17,5 @@ CREATE TABLE vehicles (
 
 /* insert test data */
 INSERT INTO vehicles (vin, make, model, year, trim, package, nickname, colorname, colorhex) VALUES
-  ('abc', 'Jeep', 'Wrangler Unlimited', 2020, 'Sport', 'Willys', 'Junebug', 'Hellayella', 'fdb93c'),
-  ('def', 'Toyota', 'Sienna', 2013, 'Limited', NULL, NULL, NULL, NULL);
+  ('1C4HJXDG3MW709024', 'Jeep', 'Wrangler Unlimited', 2020, 'Sport', 'Willys', 'Junebug', 'Hellayella', 'fdb93c'),
+  ('5TDYK3DC9DS368862', 'Toyota', 'Sienna', 2013, 'Limited', '', '', 'Shoreline Blue Pearl', '4e5269');
