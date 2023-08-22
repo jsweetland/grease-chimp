@@ -5,12 +5,20 @@ import (
     "log"
     "net/http"
 		"encoding/json"
+		"database/sql"
+		_ "github.com/lib/pq"
 )
 
 var port = "10000"
+var dbConnStr = "postgresql://gcuser:gcpass@localhost/gc?sslmode=disable"
 
 type SimpleMessage struct {
 	Message string `json:"message"`
+}
+
+type ErrorMessage struct {
+	Message string `json:"message"`
+	Error error `json:"error"`
 }
 
 type About struct {
@@ -39,8 +47,6 @@ type Vehicle struct {
 	Color Color `json:"color,omitempty"`
 }
 
-var Vehicles []Vehicle
-
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
 }
@@ -54,7 +60,6 @@ func getBaseRoute(w http.ResponseWriter, r *http.Request){
 
 	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
-
 	json.NewEncoder(w).Encode(m)
 }
 
@@ -63,17 +68,81 @@ func getAbout(w http.ResponseWriter, r *http.Request){
 
 	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
-
 	json.NewEncoder(w).Encode(AboutInfo)
 }
 
 func getVehicles(w http.ResponseWriter, r *http.Request){
 	fmt.Println("in handler: getVehicles")
+
+	var vin string
+	var make string
+	var model string
+	var year int
+	var trim string
+	var trimpackage string
+	var nickname string
+	var colorname string
+	var colorhex string
+	var vehicles = []Vehicle{}
+
+	// connect to database
+	db, err := sql.Open("postgres", dbConnStr)
+	if err != nil {
+		m := ErrorMessage{
+			Message: "An error occurred while connecting to the database.",
+			Error: err,
+		}
+
+		enableCors(&w)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(m)
+	}
+
+	q := "SELECT vin, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles"
+	rows, err := db.Query(q)
+	defer rows.Close()
+	if err != nil {
+		m := ErrorMessage{
+			Message: "An error occurred while querying the vehicles table in the database.",
+			Error: err,
+		}
+
+		enableCors(&w)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(m)
+	}
+	
+	for rows.Next() {
+		rows.Scan(
+			&vin,
+			&make,
+			&model,
+			&year,
+			&trim,
+			&trimpackage,
+			&nickname,
+			&colorname,
+			&colorhex,
+		)
+		v := Vehicle{
+			VIN: vin,
+			Make: make,
+			Model: model,
+			Year: year,
+			Trim: trim,
+			Package: trimpackage,
+			Nickname: nickname,
+			Color: Color{
+				Name: colorname,
+				Hex: colorhex,
+			},
+		}
+		vehicles = append(vehicles, v)
+   }
 	
 	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
-	
-	json.NewEncoder(w).Encode(Vehicles)
+	json.NewEncoder(w).Encode(vehicles)
 }
 
 func handleRequests() {
@@ -86,28 +155,5 @@ func handleRequests() {
 }
 
 func main() {
-	Vehicles = []Vehicle{
-		Vehicle{
-			VIN: "abc",
-			Make: "Jeep",
-			Model: "Wrangler Unlimited",
-			Year: 2020,
-			Trim: "Sport",
-			Package: "Willys",
-			Nickname: "Junebug",
-			Color: Color{
-				Name: "Hellayella",
-				Hex: "fdb93c",
-			},
-		},
-		Vehicle{
-			VIN: "def",
-			Make: "Toyota",
-			Model: "Sienna",
-			Year: 2013,
-			Trim: "Limited",
-		},
-	}
-		
 	handleRequests()
 }
