@@ -1,14 +1,17 @@
-import VehicleCardList from "./components/vehicleCardList";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/home";
+import VehiclesPage from "./pages/vehicles";
+import VehicleDetailPage from "./pages/vehicleDetail";
 
 const App = () => {
-  const style = {
-    background: "white",
-  };
-
   let content = (
-    <div style={style}>
-      <VehicleCardList />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/vehicles" element={<VehiclesPage />} />
+        <Route path="/vehicleDetail/:vin" Component={VehicleDetailPage} />
+      </Routes>
+    </>
   );
 
   return content;

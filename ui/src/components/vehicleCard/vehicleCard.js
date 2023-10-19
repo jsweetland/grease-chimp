@@ -1,6 +1,7 @@
 import React from "react"
 import VehicleCardNickname from "./vehicleCardNickname";
 import VehicleCardByline from "./vehicleCardByline";
+import VehicleCardDetailLink from "./vehicleCardDetailLink";
 
 class VehicleCard extends React.Component {
   constructor(props) {
@@ -51,6 +52,7 @@ class VehicleCard extends React.Component {
       <div style={style} key={this.props.vehicle.vin}>
         <VehicleCardNickname nickname={this.state.nickname} />
         <VehicleCardByline byline={this.state.byline} />
+        <VehicleCardDetailLink vin={this.props.vehicle.vin} />
       </div>
     );
   }
