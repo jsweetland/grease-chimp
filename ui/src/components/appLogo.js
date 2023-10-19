@@ -1,24 +1,20 @@
 import React from "react"
 
-class AppLogo extends React.Component {
-  constructor(props) {
-    super(props);
+function AppLogo() {
+  const style = {
+    display: "block",
+    fontSize: "24pt",
+    fontWeight: "bold",
+    margin: "20px",
   }
 
-  render() {
-    const style = {
-      display: "block",
-      fontSize: "24pt",
-      fontWeight: "bold",
-      margin: "20px",
-    }
-
-    return (
-      <div style={style}>
-        Grease Chimp
-      </div>
-    )
-  }
+  let content = (
+    <div style={style}>
+      Grease Chimp
+    </div>
+  )
+  
+  return content;
 }
 
 export default AppLogo;

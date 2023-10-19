@@ -1,23 +1,19 @@
 import React from "react"
 import AppLogo from "./appLogo";
 
-class PageHeader extends React.Component {
-  constructor(props) {
-    super(props);
+function PageHeader() {
+  const style = {
+    display: "block",
+    background: "green",
   }
 
-  render() {
-    const style = {
-      display: "block",
-      background: "green",
-    }
+  let content = (
+    <div style={style}>
+      <AppLogo />
+    </div>
+  )
 
-    return (
-      <div style={style}>
-        <AppLogo />
-      </div>
-    )
-  }
+  return content;
 }
 
 export default PageHeader;
