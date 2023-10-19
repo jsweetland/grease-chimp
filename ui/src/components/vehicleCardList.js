@@ -1,47 +1,36 @@
-import React from "react"
+import React, {useState, useEffect, useCallback} from "react"
 import GetVehicles from "../api/getVehicles";
 import VehicleCard from "./vehicleCard";
 
-class VehicleCardList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      vehicles: [],
-    }
-  }
+function VehicleCardList() {
+  const [vehicles, updateVehicles] = useState([])
 
-  componentDidMount() {
-    this.renderVehicleCardList();
-  }
-
-  renderVehicleCardList = async () => {
+  const fetchVehicleData = useCallback(async () => {
     try {
-      const vehicles = await GetVehicles();
-
-      this.setState({
-        vehicles: vehicles,
-      });
+      let getVehiclesResponse = await GetVehicles()
+      updateVehicles(getVehiclesResponse)
     } catch (err) {
       console.log(err);
     }
-  }
+  }, [])
 
-  render() {
-    const style = {};
+  useEffect(() => {
+    fetchVehicleData()
+  }, [fetchVehicleData])
 
-    console.log("Vehicles:")
-    console.log(this.state.vehicles)
+  const style = {};
 
-    const vehicles = this.state.vehicles?.map((vehicle) => (
-      <VehicleCard vehicle={vehicle} />
-    ));
+  const vehicleList = vehicles?.map((vehicle) => (
+    <VehicleCard vehicle={vehicle} />
+  ));
 
-    return (
-      <div style={style}>
-        {vehicles}
-      </div>
-    );
-  }
+  let content = (
+    <div style={style}>
+      {vehicleList}
+    </div>
+  );
+
+  return content;
 }
 
 export default VehicleCardList;
