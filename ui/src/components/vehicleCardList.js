@@ -1,6 +1,6 @@
 import React from "react"
 import GetVehicles from "../api/getVehicles";
-import VehicleCard from "./vehicleCard/vehicleCard";
+import VehicleCard from "./vehicleCard";
 
 class VehicleCardList extends React.Component {
   constructor(props) {
