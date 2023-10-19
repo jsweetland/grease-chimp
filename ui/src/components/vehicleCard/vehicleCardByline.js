@@ -1,26 +1,22 @@
 import React from "react"
 
-class VehicleCardByline extends React.Component {
-  constructor(props) {
-    super(props);
+function VehicleCardByline(props) {
+  const style = {
+    display: "float",
+    float: "left",
+    clear: "both",
+    padding: "5px 0 0 0",
+    fontSize: "11pt",
+    fontWeight: "normal",
   }
 
-  render() {
-    const style = {
-      display: "float",
-      float: "left",
-      clear: "both",
-      padding: "5px 0 0 0",
-      fontSize: "11pt",
-      fontWeight: "normal",
-    }
+  let content = (
+    <div style={style}>
+      {props.byline}
+    </div>
+  )
 
-    return (
-      <div style={style}>
-        {this.props.byline}
-      </div>
-    )
-  }
+  return content;
 }
 
 export default VehicleCardByline;

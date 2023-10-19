@@ -1,30 +1,24 @@
 import React from "react"
 
-class VehicleCardDetailLink extends React.Component {
-  constructor(props) {
-    super(props);
+function VehicleCardDetailLink(props) {
+  const style = {
+    display: "float",
+    float: "left",
+    clear: "both",
+    padding: "5px 0 0 0",
+    fontSize: "10pt",
+    fontWeight: "normal",
   }
 
-  render() {
-    const style = {
-      display: "float",
-      float: "left",
-      clear: "both",
-      padding: "5px 0 0 0",
-      fontSize: "10pt",
-      fontWeight: "normal",
-    }
+  let vehicleDetailRoute = `/vehicleDetail/${props.vin}`
 
-    let vehicleDetailRoute = `/vehicleDetail/${this.props.vin}`
+  let content = (
+    <div style={style}>
+      <a href={vehicleDetailRoute}>View Vehicle Detail</a>
+    </div>
+  )
 
-    let content = (
-      <div style={style}>
-        <a href={vehicleDetailRoute}>View Vehicle Detail</a>
-      </div>
-    )
-
-    return content;
-  }
+  return content;
 }
 
 export default VehicleCardDetailLink;

@@ -1,25 +1,21 @@
 import React from "react"
 
-class VehicleCardNickname extends React.Component {
-  constructor(props) {
-    super(props);
+function VehicleCardNickname(props) {
+  const style = {
+    display: "float",
+    float: "left",
+    clear: "both",
+    fontSize: "16pt",
+    fontWeight: "bold",
   }
 
-  render() {
-    const style = {
-      display: "float",
-      float: "left",
-      clear: "both",
-      fontSize: "16pt",
-      fontWeight: "bold",
-    }
+  let content = (
+    <div style={style}>
+      {props.nickname}
+    </div>
+  )
 
-    return (
-      <div style={style}>
-        {this.props.nickname}
-      </div>
-    )
-  }
+  return content;
 }
 
 export default VehicleCardNickname;
