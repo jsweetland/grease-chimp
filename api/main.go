@@ -287,6 +287,7 @@ func postStoreVINData(w http.ResponseWriter, r *http.Request) {
 					errorResponse(&w, "An error occurred while attempting to insert the data into the database", err)
 				} else {
 					// send back a success message
+					fmt.Printf("  [%s] data for VIN %s successfully inserted", h, v)
 					messageResponse(&w, fmt.Sprintf("Data for VIN %s was successfully inserted", v))
 				}
 			}
@@ -299,12 +300,35 @@ func postStoreVINData(w http.ResponseWriter, r *http.Request) {
 			d, err := vin.Lookup(v)
 			if err != nil {
 				errorResponse(&w, "An error occured while looking up the VIN data", err)
-			}
+			} else {
+				// make sure there's one and only one record for the specified vin
+				if d.Count == 0 {
+					// there are no records
+					errorResponse(&w, "No data results were found for the specified VIN", nil)
+				} else if d.Count > 1 {
+					// there are two or more records
+					errorResponse(&w, fmt.Sprintf("%d results were found for the specified VIN", d.Count), nil)
+				} else {
+					// there is a single record, store the retrieved data
+					fmt.Printf("  [%s] data for VIN %s successfully retrieved", h, v)
 
-			// return the vin data
-			enableCors(&w)
-			setJSONContentType(&w)
-			json.NewEncoder(w).Encode(d)
+					// connect to database
+					dbconn, err := db.Connect()
+					if err != nil {
+						errorResponse(&w, "An error occurred while connecting to the database.", err)
+					}
+
+					// insert the data into the vindata table
+					v, err := db.InsertVINData(dbconn, d.Results[0])
+					if err != nil {
+						errorResponse(&w, "An error occurred while attempting to insert the data into the database", err)
+					} else {
+						// send back a success message
+						fmt.Printf("  [%s] data for VIN %s successfully inserted", h, v)
+						messageResponse(&w, fmt.Sprintf("Data for VIN %s was successfully inserted", v))
+					}
+				}
+			}
 		}
 	default:
 		methodNotAllowedResponse(&w, h)
