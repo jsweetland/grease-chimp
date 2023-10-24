@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -195,6 +196,76 @@ func getVehicles(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(vehicles)
 }
 
+// GET /vehicle/{id}
+// get data for the vehicle with the specified id
+func getVehicleByID(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(chi.URLParam(r, "id"))
+	if err != nil {
+		errorResponse(&w, "An error occurred while parsing the vehicle ID from the request parameters.", err)
+	}
+
+	var vin string
+	var make string
+	var model string
+	var year int
+	var trim string
+	var trimpackage string
+	var nickname string
+	var colorname string
+	var colorhex string
+
+	// connect to database
+	db, err := db.Connect()
+	if err != nil {
+		errorResponse(&w, "An error occurred while connecting to the database.", err)
+	}
+
+	// query the database for vehicles
+	q := `
+	SELECT vin, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles
+	WHERE id = $1`
+	rows, err := db.Query(q, id)
+	if err != nil {
+		errorResponse(&w, "An error occurred while querying the vehicles table in the database.", err)
+	}
+	defer rows.Close()
+
+	// load the data
+	var v Vehicle
+	for rows.Next() {
+		rows.Scan(
+			&vin,
+			&make,
+			&model,
+			&year,
+			&trim,
+			&trimpackage,
+			&nickname,
+			&colorname,
+			&colorhex,
+		)
+		v = Vehicle{
+			ID:       id,
+			VIN:      vin,
+			Make:     make,
+			Model:    model,
+			Year:     year,
+			Trim:     trim,
+			Package:  trimpackage,
+			Nickname: nickname,
+			Color: Color{
+				Name: colorname,
+				Hex:  colorhex,
+			},
+		}
+	}
+
+	// send the data back in the response
+	enableCors(&w)
+	setJSONContentType(&w)
+	json.NewEncoder(w).Encode(v)
+}
+
 // GET /vinlookup?vin={vin}
 // look up the data for the specified vin
 func getVINLookup(w http.ResponseWriter, r *http.Request) {
@@ -288,6 +359,7 @@ func startServer() {
 	r.Get("/", getBaseRoute)
 	r.Get("/about", getAbout)
 	r.Get("/vehicles", getVehicles)
+	r.Get("/vehicle/{id}", getVehicleByID)
 	r.Get("/vinlookup", getVINLookup)
 	r.Post("/storevindata", postStoreVINData)
 
