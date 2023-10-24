@@ -3,7 +3,8 @@ package db
 import (
 	"database/sql"
 	"fmt"
-	"gc/vin"
+
+	"github.com/gc/vin"
 
 	_ "github.com/lib/pq"
 )
