@@ -38,6 +38,7 @@ type Color struct {
 
 // type for the vehicle data
 type Vehicle struct {
+	ID       int    `json:"id"`
 	VIN      string `json:"vin,omitempty"`
 	Make     string `json:"make,omitempty"`
 	Model    string `json:"model,omitempty"`
@@ -149,6 +150,7 @@ func getVehicles(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
+		var id int
 		var vin string
 		var make string
 		var model string
@@ -167,7 +169,7 @@ func getVehicles(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// query the database for vehicles
-		q := "SELECT vin, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles"
+		q := "SELECT id, vin, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles"
 		rows, err := db.Query(q)
 		defer rows.Close()
 		if err != nil {
@@ -177,6 +179,7 @@ func getVehicles(w http.ResponseWriter, r *http.Request) {
 		// load the rows of data into an array
 		for rows.Next() {
 			rows.Scan(
+				&id,
 				&vin,
 				&make,
 				&model,
@@ -188,6 +191,7 @@ func getVehicles(w http.ResponseWriter, r *http.Request) {
 				&colorhex,
 			)
 			v := Vehicle{
+				ID:       id,
 				VIN:      vin,
 				Make:     make,
 				Model:    model,
