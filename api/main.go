@@ -3,12 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
 
-	"gc/db"
-	"gc/vin"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+
+	"github.com/gc/db"
+	"github.com/gc/vin"
 )
 
 // -----   Data Types   -----
@@ -112,7 +114,6 @@ func methodNotAllowedResponse(w *http.ResponseWriter, h string) {
 // handles any unhandled routes
 func getBaseRoute(w http.ResponseWriter, r *http.Request) {
 	h := "getBaseRoute"
-	logHandler(h, r.Method)
 
 	s := "no functionality is implemented at this endpoint"
 	m := SimpleMessage{
@@ -130,7 +131,6 @@ func getBaseRoute(w http.ResponseWriter, r *http.Request) {
 // returns the about info for the application
 func getAbout(w http.ResponseWriter, r *http.Request) {
 	h := "getAbout"
-	logHandler(h, r.Method)
 
 	switch r.Method {
 	case http.MethodGet:
@@ -222,21 +222,12 @@ func getVINLookup(w http.ResponseWriter, r *http.Request) {
 	h := "getVinLookup"
 	logHandler(h, r.Method)
 
-	switch r.Method {
-	case http.MethodGet:
-		// parse the complete url from the request
-		u, err := url.Parse(r.URL.String())
-		if err != nil {
-			errorResponse(&w, "An error occurred while parsing the URL for VIN lookup", err)
-		}
+	// get the vin value from the parameter
+	v := r.URL.Query().Get("vin")
+	if v == "" {
 
-		// parse the query parameters from the complete request url
-		q, _ := url.ParseQuery(u.RawQuery)
-
-		// extract the vin from the query parameters
-		v := q["vin"][0]
-		fmt.Printf("  [%s] vin = %s\n", h, v)
-
+		errorResponse(&w, "No VIN value was provided", nil)
+	} else {
 		// look up the vin data
 		d, err := vin.Lookup(v)
 		if err != nil {
@@ -247,8 +238,6 @@ func getVINLookup(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
 		setJSONContentType(&w)
 		json.NewEncoder(w).Encode(d)
-	default:
-		methodNotAllowedResponse(&w, h)
 	}
 }
 
@@ -339,19 +328,34 @@ func postStoreVINData(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// handle the request routes
-func handleRequests() {
-	http.HandleFunc("/", getBaseRoute)
-	http.HandleFunc("/about", getAbout)
-	http.HandleFunc("/vehicles", getVehicles)
-	http.HandleFunc("/vinlookup", getVINLookup)
-	http.HandleFunc("/storevindata", postStoreVINData)
+// // handle the request routes
+// func handleRequests() {
+// 	http.HandleFunc("/", getBaseRoute)
+// 	http.HandleFunc("/about", getAbout)
+// 	http.HandleFunc("/vehicles", getVehicles)
+// 	http.HandleFunc("/vinlookup", getVINLookup)
+// 	http.HandleFunc("/storevindata", postStoreVINData)
 
-	fmt.Printf("listening on port %s\n", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+// 	fmt.Printf("listening on port %s\n", port)
+// 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+// }
+
+func startServer() {
+	r := chi.NewRouter()
+
+	r.Use(middleware.Logger)
+
+	r.Get("/", getBaseRoute)
+	r.Get("/about", getAbout)
+	r.Get("/vehicles", getVehicles)
+	r.Get("/vinlookup", getVINLookup)
+	r.Post("/storevindata", postStoreVINData)
+
+	p := 10000
+	fmt.Printf("Listening on port %d\n", p)
+	http.ListenAndServe(fmt.Sprintf(":%d", p), r)
 }
 
-// main
 func main() {
-	handleRequests()
+	startServer()
 }
