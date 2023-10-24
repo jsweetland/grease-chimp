@@ -4,7 +4,8 @@ GRANT ALL PRIVILEGES ON DATABASE gc TO gcuser;
 \c gc;
 
 CREATE TABLE vehicles (
-  vin varchar primary key,
+  id serial primary key,
+  vin varchar,
   make varchar,
   model varchar,
   year int,
