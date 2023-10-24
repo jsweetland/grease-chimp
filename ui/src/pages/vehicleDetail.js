@@ -7,15 +7,14 @@ function VehicleDetailPage() {
     background: "white",
   };
 
-  const {vin} = useParams()
-  console.log("vin = ", JSON.stringify(vin))
-  // console.log("VIN=", this.props.match.params.vin)
+  const {id} = useParams()
+  console.log("id = ", JSON.stringify(id))
   
   let content = (
     <>
       <PageHeader />
       <div style={style}>
-        <div>Detailed Information for VIN {vin}</div>
+        <div>Detailed Information for ID {id}</div>
       </div>
     </>
   );
