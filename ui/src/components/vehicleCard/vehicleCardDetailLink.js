@@ -10,7 +10,7 @@ function VehicleCardDetailLink(props) {
     fontWeight: "normal",
   }
 
-  let vehicleDetailRoute = `/vehicleDetail/${props.vin}`
+  let vehicleDetailRoute = `/vehicleDetail/${props.id}`
 
   let content = (
     <div style={style}>

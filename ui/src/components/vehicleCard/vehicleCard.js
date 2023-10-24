@@ -26,10 +26,10 @@ function VehicleCard(props) {
   };
 
   let content = (
-    <div style={style} key={props.vehicle.vin}>
+    <div style={style} key={props.vehicle.id}>
       <VehicleCardNickname nickname={nickname} />
       <VehicleCardByline byline={byline} />
-      <VehicleCardDetailLink vin={props.vehicle.vin} />
+      <VehicleCardDetailLink id={props.vehicle.id} />
     </div>
   );
 
