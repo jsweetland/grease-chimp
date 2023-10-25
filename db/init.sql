@@ -6,6 +6,8 @@ GRANT ALL PRIVILEGES ON DATABASE gc TO gcuser;
 CREATE TABLE vehicles (
   id serial primary key,
   vin varchar,
+  plateissuer varchar,
+  platevalue varchar,
   make varchar,
   model varchar,
   year int,

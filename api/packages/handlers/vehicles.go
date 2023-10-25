@@ -14,6 +14,8 @@ import (
 func GetVehicles(w http.ResponseWriter, r *http.Request) {
 	var id int
 	var vin string
+	var plateissuer string
+	var platevalue string
 	var make string
 	var model string
 	var year int
@@ -31,7 +33,7 @@ func GetVehicles(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// query the database for vehicles
-	q := "SELECT id, vin, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles"
+	q := "SELECT id, vin, plateissuer, platevalue, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles"
 	rows, err := db.Query(q)
 	if err != nil {
 		helpers.ErrorResponse(&w, "An error occurred while querying the vehicles table in the database.", err)
@@ -43,6 +45,8 @@ func GetVehicles(w http.ResponseWriter, r *http.Request) {
 		rows.Scan(
 			&id,
 			&vin,
+			&plateissuer,
+			&platevalue,
 			&make,
 			&model,
 			&year,
@@ -53,8 +57,12 @@ func GetVehicles(w http.ResponseWriter, r *http.Request) {
 			&colorhex,
 		)
 		v := types.Vehicle{
-			ID:       id,
-			VIN:      vin,
+			ID:  id,
+			VIN: vin,
+			Plate: types.Plate{
+				Issuer: plateissuer,
+				Value:  platevalue,
+			},
 			Make:     make,
 			Model:    model,
 			Year:     year,

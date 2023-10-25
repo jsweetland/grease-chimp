@@ -21,6 +21,8 @@ func GetVehicleByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var vin string
+	var plateissuer string
+	var platevalue string
 	var make string
 	var model string
 	var year int
@@ -38,7 +40,7 @@ func GetVehicleByID(w http.ResponseWriter, r *http.Request) {
 
 	// query the database for vehicles
 	q := `
-	SELECT vin, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles
+	SELECT vin, plateissuer, platevalue, make, model, year, trim, package, nickname, colorname, colorhex FROM vehicles
 	WHERE id = $1`
 	rows, err := db.Query(q, id)
 	if err != nil {
@@ -51,6 +53,8 @@ func GetVehicleByID(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		rows.Scan(
 			&vin,
+			&plateissuer,
+			&platevalue,
 			&make,
 			&model,
 			&year,
@@ -61,8 +65,12 @@ func GetVehicleByID(w http.ResponseWriter, r *http.Request) {
 			&colorhex,
 		)
 		v = types.Vehicle{
-			ID:       id,
-			VIN:      vin,
+			ID:  id,
+			VIN: vin,
+			Plate: types.Plate{
+				Issuer: plateissuer,
+				Value:  platevalue,
+			},
 			Make:     make,
 			Model:    model,
 			Year:     year,
