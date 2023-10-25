@@ -1,4 +1,4 @@
-# Start the backend API
+# Build the backend API
 
 #!/bin/bash
 
@@ -7,6 +7,6 @@ orig_path=$(pwd)
 
 cd ${script_path}
 
-./gc-api
+go build -o gc-api
 
 cd ${orig_path}
