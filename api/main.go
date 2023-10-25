@@ -21,6 +21,7 @@ func startServer() {
 	r.Get("/about", handlers.GetAbout)
 	r.Get("/vehicles", handlers.GetVehicles)
 	r.Get("/vehicle/{id}", handlers.GetVehicleByID)
+	r.Post("/vehicle", handlers.PostAddOrUpdateVehicle)
 	r.Get("/vinlookup", handlers.GetVINLookup)
 	r.Post("/storevindata", handlers.PostStoreVINData)
 

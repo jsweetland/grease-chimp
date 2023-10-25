@@ -81,3 +81,39 @@ func GetVehicleByID(w http.ResponseWriter, r *http.Request) {
 	helpers.SetJSONContentType(&w)
 	json.NewEncoder(w).Encode(v)
 }
+
+// POST /vehicle
+// add or update data for a vehicle
+func PostAddOrUpdateVehicle(w http.ResponseWriter, r *http.Request) {
+	var v types.Vehicle
+	err := json.NewDecoder(r.Body).Decode(&v)
+	if err != nil {
+		helpers.ErrorResponse(&w, "an error occurred decoding the request body", err)
+	} else {
+		// connect to database
+		dbconn, err := db.Connect()
+		if err != nil {
+			helpers.ErrorResponse(&w, "An error occurred while connecting to the database.", err)
+		}
+
+		if v.ID == 0 {
+			// the vehicle data does not have an id, insert the vehicle data
+			id, err := db.InsertVehicleData(dbconn, v)
+			if err != nil {
+				helpers.ErrorResponse(&w, "An error occurred while inserting vehicle data.", err)
+			}
+			v.ID = id
+		} else {
+			// the vehicle data has an id, update the existing data
+			err := db.UpdateVehicleData(dbconn, v)
+			if err != nil {
+				helpers.ErrorResponse(&w, "An error occurred while inserting vehicle data.", err)
+			}
+		}
+
+		// send the data back in the response
+		helpers.EnableCors(&w)
+		helpers.SetJSONContentType(&w)
+		json.NewEncoder(w).Encode(v)
+	}
+}
