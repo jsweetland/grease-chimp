@@ -10,6 +10,7 @@ require (
 	github.com/gc/handlers v0.0.0
 	github.com/gc/types v0.0.0
 	github.com/gc/helpers v0.0.0
+	github.com/gc/emptydata v0.0.0
 )
 
 replace (
@@ -18,4 +19,5 @@ replace (
 	"github.com/gc/handlers" v0.0.0 => "./packages/handlers"
 	"github.com/gc/types" v0.0.0 => "./packges/types"
 	"github.com/gc/helpers" v0.0.0 => "./packages/helpers"
+	"github.com/gc/emptydata" v0.0.0 => "./packages/emptydata"
 )

@@ -6,6 +6,8 @@ GRANT ALL PRIVILEGES ON DATABASE gc TO gcuser;
 CREATE TABLE vehicles (
   id serial primary key,
   vin varchar,
+  plateissuer varchar,
+  platevalue varchar,
   make varchar,
   model varchar,
   year int,
@@ -170,6 +172,6 @@ CREATE TABLE vindata (
 );
 
 /* insert test data */
-INSERT INTO vehicles (vin, make, model, year, trim, package, nickname, colorname, colorhex) VALUES
-  ('1C4HJXDG3MW709024', 'Jeep', 'Wrangler Unlimited', 2020, 'Sport', 'Willys', 'Junebug', 'Hellayella', 'fdb93c'),
-  ('5TDYK3DC9DS368862', 'Toyota', 'Sienna', 2013, 'Limited', '', '', 'Shoreline Blue Pearl', '4e5269');
+INSERT INTO vehicles (vin, plateissuer, platevalue, make, model, year, trim, package, nickname, colorname, colorhex) VALUES
+  ('1C4HJXDG3MW709024', '', '', 'Jeep', 'Wrangler Unlimited', 2020, 'Sport', 'Willys', 'Junebug', 'Hellayella', 'fdb93c'),
+  ('5TDYK3DC9DS368862', '', '', 'Toyota', 'Sienna', 2013, 'Limited', '', '', 'Shoreline Blue Pearl', '4e5269');

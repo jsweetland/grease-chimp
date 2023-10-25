@@ -2,6 +2,7 @@ go 1.21.0
 
 use (
 	.
+	./packages/emptydata
 	./packages/db
 	./packages/handlers
 	./packages/helpers
