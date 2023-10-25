@@ -7,6 +7,7 @@ import (
 
 	"github.com/gc/db"
 	"github.com/gc/helpers"
+	"github.com/gc/types"
 	"github.com/gc/vin"
 )
 
@@ -17,7 +18,7 @@ func PostStoreVINData(w http.ResponseWriter, r *http.Request) {
 	v := r.URL.Query().Get("vin")
 	if v == "" {
 		// decode the request body
-		var d vin.LookupResult
+		var d types.VINData
 		err := json.NewDecoder(r.Body).Decode(&d)
 		if err != nil {
 			helpers.ErrorResponse(&w, "An error occurred while decoding the request body, the body may not have been provided", err)

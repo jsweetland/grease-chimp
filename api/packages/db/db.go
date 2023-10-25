@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/gc/types"
-	"github.com/gc/vin"
 
 	_ "github.com/lib/pq"
 )
@@ -54,7 +53,7 @@ func Connect() (db *sql.DB, err error) {
 }
 
 // insert vin data
-func InsertVINData(db *sql.DB, d vin.LookupResult) (vin string, err error) {
+func InsertVINData(db *sql.DB, d types.VINData) (vin string, err error) {
 	v := ""
 
 	s := `
