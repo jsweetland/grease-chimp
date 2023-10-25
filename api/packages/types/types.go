@@ -1,5 +1,13 @@
 package types
 
+// type for the database config
+type DBConf struct {
+	User string
+	Pass string
+	Name string
+	Host string
+}
+
 // type for a simple message response
 type SimpleMessage struct {
 	Message string `json:"message"`

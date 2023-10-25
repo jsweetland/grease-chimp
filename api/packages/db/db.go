@@ -10,14 +10,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type DBConf struct {
-	User string
-	Pass string
-	Name string
-	Host string
-}
-
-var dbConfig = DBConf{
+var dbConfig = types.DBConf{
 	User: "gcuser",
 	Pass: "gcpass",
 	Name: "gc",
@@ -25,7 +18,7 @@ var dbConfig = DBConf{
 }
 
 // generate the database connection string
-func GenerateConnStr(c DBConf) string {
+func GenerateConnStr(c types.DBConf) string {
 	s := fmt.Sprintf(
 		"postgresql://%s:%s@%s/%s?sslmode=disable",
 		dbConfig.User,
