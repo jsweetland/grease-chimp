@@ -1,18 +1,16 @@
-import React, { useState, useEffect} from "react";
+import React from "react";
 import VehicleCardNickname from "./vehicleCardNickname";
 import VehicleCardByline from "./vehicleCardByline";
 import VehicleCardDetailLink from "./vehicleCardDetailLink";
+import GenerateByline from "../../utils/generateByline";
+import GenerateNickname from "../../utils/generateNickname";
 
 function VehicleCard(props) {
   // set the byline
-  // the byline should be 'Year Make Model Trim (Package)', Trim and Package could be empty
-  let trimValue = props.vehicle.trim ? ` ${props.vehicle.trim}` : ""
-  let packageValue = props.vehicle.package ? ` (${props.vehicle.package} Package)` : ""
-  const byline = `${props.vehicle.year} ${props.vehicle.make} ${props.vehicle.model} ${trimValue}${packageValue}`
+  const byline = GenerateByline(props.vehicle);
 
   // set the nickname
-  // if the nickname is not provided, set it to 'Year Model'
-  const nickname = props.vehicle.nickname ? props.vehicle.nickname : `${props.vehicle.year} ${props.vehicle.model}`
+  const nickname = GenerateNickname(props.vehicle);
 
   const style = {
     display: "inline-block",
