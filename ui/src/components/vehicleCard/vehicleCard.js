@@ -4,6 +4,7 @@ import VehicleCardByline from "./vehicleCardByline";
 import VehicleCardDetailLink from "./vehicleCardDetailLink";
 import GenerateByline from "../../utils/generateByline";
 import GenerateNickname from "../../utils/generateNickname";
+import VehicleCardMaintenanceRecordsLink from "./vehicleCardMaintenanceRecordsLink";
 
 function VehicleCard(props) {
   // set the byline
@@ -28,6 +29,7 @@ function VehicleCard(props) {
       <VehicleCardNickname nickname={nickname} />
       <VehicleCardByline byline={byline} />
       <VehicleCardDetailLink id={props.vehicle.id} />
+      <VehicleCardMaintenanceRecordsLink id={props.vehicle.id} />
     </div>
   );
 

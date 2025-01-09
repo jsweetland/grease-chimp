@@ -52,6 +52,27 @@ type Vehicle struct {
 	Color      Color  `json:"color,omitempty"`
 }
 
+type MaintenanceActivity struct {
+	ID       int    `json:"id"`
+	Activity string `json:"activity"`
+}
+
+type MaintenanceRecord struct {
+	ID            int    `json:"id"`
+	VehicleID     int    `json:"vehicleid"`
+	Activity      string `json:"activity"`
+	DatePerformed string `json:"dateperformed"`
+	Mileage       int    `json:"mileage"`
+}
+
+type MaintenanceSchedule struct {
+	ID            int    `json:"id"`
+	VehicleID     int    `json:"vehicleid"`
+	Activity      string `json:"activity"`
+	IntervalValue int    `json:"intervalvalue"`
+	IntervalUnit  string `json:"intervalunit"`
+}
+
 type VINData struct {
 	ABS                                 string
 	ActiveSafetySysNote                 string

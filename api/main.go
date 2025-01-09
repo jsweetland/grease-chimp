@@ -19,11 +19,17 @@ func startServer() {
 
 	r.Get("/", handlers.GetBaseRoute)
 	r.Get("/about", handlers.GetAbout)
+
+	// vehicle data
 	r.Get("/vehicles", handlers.GetVehicles)
 	r.Get("/vehicle/{id}", handlers.GetVehicleByID)
 	r.Post("/vehicle", handlers.PostAddOrUpdateVehicle)
 	r.Get("/vinlookup", handlers.GetVINLookup)
 	r.Post("/storevindata", handlers.PostStoreVINData)
+
+	// maintendance data
+	r.Get("/maintenance/activities", handlers.GetMaintenanceActivities)
+	r.Get("/maintenance/records/{vehicleID}", handlers.GetMaintenanceRecordsByVehicleID)
 
 	p := "10000"
 	fmt.Printf("Listening on port %s\n", p)

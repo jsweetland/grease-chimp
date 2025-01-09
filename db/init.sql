@@ -18,6 +18,27 @@ CREATE TABLE vehicles (
   colorhex varchar
 );
 
+CREATE TABLE maintenanceactivities (
+  id serial primary key,
+  activity varchar
+);
+
+CREATE TABLE maintenancerecords (
+  id serial primary key,
+  vehicleid int,
+  activityid int,
+  dateperformed varchar,
+  mileage int
+);
+
+CREATE TABLE maintenanceschedule (
+  id serial primary key,
+	vehicleid int,
+	activityid int,
+	intervalvalue int,
+	intervalunit varchar
+);
+
 CREATE TABLE vindata (
   VIN varchar primary key,
   ABS varchar,
@@ -171,7 +192,18 @@ CREATE TABLE vindata (
   Windows varchar
 );
 
+/* static data */
+INSERT INTO maintenanceactivities (activity) VALUES
+  ('Oil Change'),
+  ('Tire Rotation'),
+  ('Brakes: Change Pads'),
+  ('Brakes: Change Rotors'),
+  ('Brakes: Change Both Pads & Rotors'),
+  ('Replace Battery');
+
 /* insert test data */
 INSERT INTO vehicles (vin, plateissuer, platevalue, make, model, year, trim, package, nickname, colorname, colorhex) VALUES
-  ('1C4HJXDG3MW709024', '', '', 'Jeep', 'Wrangler Unlimited', 2020, 'Sport', 'Willys', 'Junebug', 'Hellayella', 'fdb93c'),
-  ('5TDYK3DC9DS368862', '', '', 'Toyota', 'Sienna', 2013, 'Limited', '', '', 'Shoreline Blue Pearl', '4e5269');
+  ('1C4HJXDG3MW709024', 'VA', 'UDS-1963', 'Jeep', 'Wrangler Unlimited', 2020, 'Sport', 'Willys', 'Junebug', 'Hellayella', 'fdb93c'),
+  ('5TDYK3DC9DS368862', 'VA', 'ALLEARS', 'Toyota', 'Sienna', 2013, 'Limited', '', '', 'Shoreline Blue Pearl', '4e5269');
+INSERT INTO maintenancerecords (vehicleid, activityid, dateperformed, mileage) VALUES
+  (1, 1, '1/6/2025', 27925);
